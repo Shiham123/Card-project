@@ -46,6 +46,10 @@ function allPrice(value) {
   return sumOfAllPrice;
 }
 
+function clearAll() {
+  location.reload();
+}
+
 /*
  * and upper some of important function that handle the all onClick method
  * ! below all onclick function a called from html file
@@ -97,23 +101,10 @@ function cardNine() {
 // this is some other function
 
 function buttonUpdate() {
-  if (sumOfAllPrice >= 0) {
+  if (sumOfAllPrice > 0) {
     purchaseBtnEl.disabled = false;
   } else {
     purchaseBtnEl.disabled = true;
-  }
-}
-
-function couponAndInput() {
-  if (sumOfAllPrice >= 200) {
-    couponBtnEl.disabled = false;
-    couponBtnEl.addEventListener('click', (event) => event.preventDefault());
-
-    if (inputEl.value === 'SELL200') {
-      return appCouponCode();
-    }
-  } else {
-    couponBtnEl.disabled = true;
   }
 }
 
@@ -135,17 +126,23 @@ function appCouponCode() {
   });
 }
 
-inputEl.addEventListener('input', couponAndInput);
-couponAndInput();
-
 // clear all value
-function clearAll() {
-  sumOfAllPrice = 0;
-  ulListItem.innerHTML = '';
-  finalAmountEl.innerText = '0.00 TK';
-  discountAmountEl.innerText = '0.00 Tk';
-  totalAmountEl.innerText = '0.00 TK';
-  inputEl.value = '';
-  couponAndInput();
-  buttonUpdate();
+
+function couponAndInput() {
+  if (sumOfAllPrice >= 200) {
+    couponBtnEl.disabled = false;
+    couponBtnEl.addEventListener('click', (event) => event.preventDefault());
+
+    if (inputEl.value === 'SELL200') {
+      appCouponCode();
+    }
+  } else {
+    couponBtnEl.disabled = true;
+  }
 }
+
+inputEl.addEventListener('input', () => {
+  couponAndInput();
+});
+
+couponAndInput();
